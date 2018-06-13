@@ -1,0 +1,13 @@
+version: '3'
+volumes:
+  app-bundle:
+services:
+  app:
+    build: .
+    env_file:
+      - '.env'
+    volumes:
+      - .:/app:cached
+      - app-bundle:/usr/local/bundle
+    stdin_open: true
+    tty: true
