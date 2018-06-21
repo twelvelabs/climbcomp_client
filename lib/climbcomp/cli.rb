@@ -16,6 +16,6 @@ module Climbcomp
       require_relative 'version'
       puts "v#{Climbcomp::VERSION}"
     end
-    map %w(--version -v) => :version
+    map %w[--version -v] => :version
   end
 end
