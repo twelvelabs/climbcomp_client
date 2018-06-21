@@ -1,3 +1,3 @@
-module ClimbcompClient
+module Climbcomp
   VERSION = "0.1.0"
 end

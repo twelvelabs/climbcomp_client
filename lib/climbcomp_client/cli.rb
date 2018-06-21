@@ -2,7 +2,7 @@
 
 require 'thor'
 
-module ClimbcompClient
+module Climbcomp
   # Handle the application command line parsing
   # and the dispatch to various command objects
   #
@@ -14,7 +14,7 @@ module ClimbcompClient
     desc 'version', 'climbcomp version'
     def version
       require_relative 'version'
-      puts "v#{ClimbcompClient::VERSION}"
+      puts "v#{Climbcomp::VERSION}"
     end
     map %w(--version -v) => :version
   end

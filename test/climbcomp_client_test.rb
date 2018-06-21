@@ -1,7 +1,7 @@
 require "test_helper"
 
-class ClimbcompClientTest < Minitest::Test
+class ClimbcompTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::ClimbcompClient::VERSION
+    refute_nil ::Climbcomp::VERSION
   end
 end

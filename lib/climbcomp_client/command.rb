@@ -2,7 +2,7 @@
 
 require 'forwardable'
 
-module ClimbcompClient
+module Climbcomp
   class Command
     extend Forwardable
 
