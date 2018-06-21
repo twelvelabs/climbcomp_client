@@ -82,14 +82,6 @@ Style/PercentLiteralDelimiters:
   Exclude:
     - 'lib/climbcomp/cli.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  Exclude:
-    - 'exe/climbcomp'
-
 # Offense count: 3
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
