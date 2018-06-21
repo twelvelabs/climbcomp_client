@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker version
+  - docker-compose version
+  - docker-compose build
+  - docker-compose run app rake test
