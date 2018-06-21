@@ -1,1 +1,1 @@
-require "climbcomp"
+require 'climbcomp'

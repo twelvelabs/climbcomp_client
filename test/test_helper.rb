@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "climbcomp"
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'climbcomp'
 
-require "minitest/autorun"
+require 'minitest/autorun'

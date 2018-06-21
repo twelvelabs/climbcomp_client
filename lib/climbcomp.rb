@@ -1,4 +1,4 @@
-require "climbcomp/version"
+require 'climbcomp/version'
 
 module Climbcomp
   # Your code goes here...
