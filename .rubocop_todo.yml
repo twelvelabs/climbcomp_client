@@ -15,12 +15,6 @@ Gemspec/OrderedDependencies:
     - 'climbcomp_client.gemspec'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Layout/LeadingBlankLines:
-  Exclude:
-    - 'climbcomp_client.gemspec'
-
-# Offense count: 1
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/BlockLength:
   Max: 39
