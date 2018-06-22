@@ -3,20 +3,13 @@
 require 'test_helper'
 require 'fileutils'
 
-class StoreTest < Minitest::Spec
+class StoreTest < Climbcomp::Spec
 
   describe Climbcomp::Store do
 
-    let(:storage_dir) { File.join(Dir.tmpdir, 'climbcomp') }
-    let(:storage_path) { File.join(storage_dir, 'test-store.json') }
-
-    before do
-      FileUtils.remove_dir(storage_dir) if Dir.exist?(storage_dir)
-    end
-
-    after do
-      FileUtils.remove_dir(storage_dir) if Dir.exist?(storage_dir)
-    end
+    # Note: `config_dir` gets auto removed in `Climbcomp::Spec` before/after hooks
+    let(:storage_dir) { config_dir }
+    let(:storage_path) { config_path('storage.yml') }
 
     it 'should create storage_dir if needed' do
       assert_equal false, Dir.exist?(storage_dir)
