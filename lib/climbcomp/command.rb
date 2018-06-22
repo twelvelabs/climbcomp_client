@@ -8,6 +8,23 @@ module Climbcomp
 
     def_delegators :command, :run
 
+    attr_accessor :options
+
+    def initialize(options = {})
+      @options = options
+    end
+
+    def credentials_store
+      raise 'Missing credentials path!' unless options[:credentials_path].present?
+      @credentials_store ||= Climbcomp::Store.new(options[:credentials_path])
+    end
+
+    # Will be hash containing all the credentials required for the API client,
+    # or `nil` if any are missing or blank. Allows for an easy `credentials.present?` check.
+    def credentials
+      @credentials ||= credentials_store.presence(:client_id, :client_secret, :access_token, :refresh_token, :expires_at)
+    end
+
     # Execute this command
     #
     # @api public
