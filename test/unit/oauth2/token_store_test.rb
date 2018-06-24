@@ -2,12 +2,12 @@
 
 require 'test_helper'
 
-class Oauth2TokenStoreTest < Climbcomp::Spec
+class OAuth2TokenStoreTest < Climbcomp::Spec
 
-  describe Climbcomp::Oauth2::TokenStore do
+  describe Climbcomp::OAuth2::TokenStore do
 
     it 'should have a test' do
-      assert Climbcomp::Oauth2::TokenStore
+      assert Climbcomp::OAuth2::TokenStore
     end
 
   end

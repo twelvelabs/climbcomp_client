@@ -1,22 +1,15 @@
 # frozen_string_literal: true
 
 require 'climbcomp/store'
-require 'faraday'
 
 module Climbcomp
-  module Oauth2
+  module OAuth2
     class ClientStore < Store
 
-      def id
-        transaction(true) { |s| s[:client_id] }
-      end
-
-      def secret
-        transaction(true) { |s| s[:client_secret] }
-      end
-
-      def present?
-        transaction(true) { |s| s[:client_id].present? && s[:client_secret].present? }
+      def retrieve
+        values = presence(:client_id, :client_secret)
+        return nil unless values
+        ::OAuth2::Client.new(values[:client_id], values[:client_secret])
       end
 
       def register
@@ -25,6 +18,7 @@ module Climbcomp
         client = JSON.parse(response.body)
         raise 'Malformed registration response' unless client['client_id'].present? && client['client_secret'].present?
         insert(client)
+        retrieve
       end
 
       private
@@ -34,7 +28,7 @@ module Climbcomp
           client_name: 'Climbcomp Ruby CLI',
           redirect_uris: [Authorizer::CALLBACK_URL]
         }
-        conn = Faraday.new('https://climbcomp.auth0.com')
+        conn = ::Faraday.new('https://climbcomp.auth0.com')
         conn.post('/oidc/register', JSON.generate(client), content_type: 'application/json')
       end
 

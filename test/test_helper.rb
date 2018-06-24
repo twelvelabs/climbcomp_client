@@ -2,7 +2,8 @@
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'climbcomp'
-require 'yaml'
+require 'climbcomp/cli'
+require 'climbcomp/command'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
