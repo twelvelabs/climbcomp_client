@@ -2,10 +2,23 @@
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'climbcomp'
+require 'yaml'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'mocha/minitest'
+
+# Webmock is requiring `addressable`, which is generating a warning.
+# It's apparently fixed in master, but they have yet to release a new gem version :(
+# Manually supressing warnings until they do because I get twitchy when there's
+# spam in my test output.
+begin
+  old_verbose = $VERBOSE
+  $VERBOSE = nil
+  require 'webmock/minitest'
+ensure
+  $VERBOSE = old_verbose
+end
 
 Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new]
 
@@ -27,6 +40,13 @@ module Climbcomp
 
     def config_path(filename)
       File.join(config_dir, filename)
+    end
+
+    def write_yaml(path, content)
+      # Ensure dir
+      dir = File.dirname(path)
+      Dir.mkdir(dir) unless Dir.exist?(dir)
+      File.write(path, content.to_yaml)
     end
 
   end
