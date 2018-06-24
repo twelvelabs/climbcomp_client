@@ -27,6 +27,12 @@ module Climbcomp
       table.symbolize_keys
     end
 
+    def insert(hash)
+      transaction do
+        hash.each { |k, v| self[k.to_sym] = v }
+      end
+    end
+
     # Similar to Hash#slice: returns a hash w/ all `keys` present in the store.
     def slice(*keys)
       transaction(true) do

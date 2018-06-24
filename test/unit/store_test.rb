@@ -72,6 +72,16 @@ class StoreTest < Climbcomp::Spec
       assert_equal [:alpha], store.slice(:alpha).keys
     end
 
+    it 'should bulk insert hashes' do
+      store = Climbcomp::Store.new(storage_path)
+      store.transaction do |s|
+        s[:alpha] = 'a'
+      end
+      store.insert(alpha: 'A', bravo: 'B')
+      assert_equal('A', store.transaction { |s| s[:alpha] })
+      assert_equal('B', store.transaction { |s| s[:bravo] })
+    end
+
   end
 
   def posix_permissions(path)
