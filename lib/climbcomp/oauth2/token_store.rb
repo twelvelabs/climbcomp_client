@@ -3,6 +3,8 @@
 require 'climbcomp/store'
 
 module Climbcomp
-  class TokenStore < Store
+  module Oauth2
+    class TokenStore < Store
+    end
   end
 end
