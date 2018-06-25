@@ -6,11 +6,11 @@ RUN apk add --update \
   curl \
   && rm -rf /var/cache/apk/*
 
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir /climbcomp
+WORKDIR /climbcomp
 
-COPY *.gemspec /app/
-COPY Gemfile* /app/
+COPY *.gemspec /climbcomp/
+COPY Gemfile* /climbcomp/
 RUN bundle install --jobs 4
 
-COPY . /app
+COPY . /climbcomp
