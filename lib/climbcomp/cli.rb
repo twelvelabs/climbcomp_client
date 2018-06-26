@@ -22,5 +22,17 @@ module Climbcomp
       puts "v#{Climbcomp::VERSION}"
     end
     map %w[--version -v] => :version
+
+    desc 'login', 'Command description...'
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    def login(*)
+      if options[:help]
+        invoke :help, ['login']
+      else
+        require_relative 'commands/login'
+        Climbcomp::Commands::Login.new(options).execute
+      end
+    end
   end
 end
