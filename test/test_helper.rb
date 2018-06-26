@@ -9,16 +9,11 @@ require 'minitest/autorun'
 require 'minitest/reporters'
 require 'mocha/minitest'
 
-# Webmock is requiring `addressable`, which is generating a warning.
+# Webmock is requiring `addressable`, which is generating a warning in Ruby 2.5.
 # It's apparently fixed in master, but they have yet to release a new gem version :(
-# Manually supressing warnings until they do because I get twitchy when there's
-# spam in my test output.
-begin
-  old_verbose = $VERBOSE
-  $VERBOSE = nil
+# Suppressing warnings until they do because I get twitchy when there's spam in my test output.
+silence_warnings do
   require 'webmock/minitest'
-ensure
-  $VERBOSE = old_verbose
 end
 
 Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new]

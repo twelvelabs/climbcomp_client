@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/kernel/reporting'
 require 'active_support/core_ext/object/blank'
 require 'oauth2' # must be required before faraday
 require 'faraday'
@@ -14,5 +15,4 @@ require 'climbcomp/store'
 require 'climbcomp/version'
 
 module Climbcomp
-  # Your code goes here...
 end
