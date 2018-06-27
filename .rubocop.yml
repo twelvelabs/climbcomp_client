@@ -1,10 +1,13 @@
 AllCops:
   TargetRubyVersion: 2.3
 
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
-Layout/EmptyLinesAroundBlockBody:
+Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
 Metrics/BlockLength:

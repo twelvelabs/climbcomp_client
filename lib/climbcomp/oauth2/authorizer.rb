@@ -10,7 +10,6 @@ require 'webrick'
 module Climbcomp
   module OAuth2
     class Authorizer
-      CALLBACK_URL = 'http://localhost:3001/oauth2/callback'
 
       attr_accessor :client, :token_store, :state
       attr_writer :callback_server
@@ -31,12 +30,11 @@ module Climbcomp
         token_store.retrieve(client)
       end
 
-      # TODO: make audience and custom scopes configurable.
       def authorize_params
         {
-          audience:     'https://staging.climbcomp.com/',
+          audience:     Climbcomp.config.oidc_audience,
           redirect_uri: callback_url,
-          scope:        'openid profile email offline_access admin',
+          scope:        Climbcomp.config.oidc_scopes,
           state:        state
         }
       end
@@ -59,7 +57,7 @@ module Climbcomp
       end
 
       def callback_url
-        CALLBACK_URL
+        Climbcomp.config.oidc_redirect_uri
       end
 
       def callback(code)
@@ -70,7 +68,7 @@ module Climbcomp
 
       def callback_server
         @callback_server ||= begin
-          s = WEBrick::HTTPServer.new('Port': 3001)
+          s = WEBrick::HTTPServer.new('Port': URI(callback_url).port)
           s.mount_proc(URI(callback_url).path, callback_server_proc)
           s
         end

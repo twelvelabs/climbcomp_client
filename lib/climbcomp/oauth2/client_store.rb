@@ -6,8 +6,6 @@ module Climbcomp
   module OAuth2
     class ClientStore < Store
 
-      AUTH_DOMAIN = 'https://climbcomp.auth0.com'
-
       def retrieve
         values = presence(:client_id, :client_secret)
         return nil unless values
@@ -27,19 +25,19 @@ module Climbcomp
 
       def client_options
         {
-          site:           AUTH_DOMAIN,
-          authorize_url:  '/authorize',
-          token_url:      '/oauth/token'
+          site:           Climbcomp.config.oidc_issuer,
+          authorize_url:  Climbcomp.config.oidc_authorization_endpoint,
+          token_url:      Climbcomp.config.oidc_token_endpoint
         }
       end
 
       def send_registration_request
         client = {
-          client_name:    'Climbcomp Ruby CLI',
-          redirect_uris:  [Authorizer::CALLBACK_URL]
+          client_name:    Climbcomp.config.user_agent,
+          redirect_uris:  [Climbcomp.config.oidc_redirect_uri]
         }
-        conn = ::Faraday.new(AUTH_DOMAIN)
-        conn.post('/oidc/register', JSON.generate(client), content_type: 'application/json')
+        conn = ::Faraday.new(url: Climbcomp.config.oidc_issuer)
+        conn.post(Climbcomp.config.oidc_registration_endpoint, JSON.generate(client), content_type: 'application/json')
       end
 
     end
