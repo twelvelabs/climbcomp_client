@@ -7,7 +7,7 @@ module Climbcomp
     class TokenStore < Store
 
       CLIENT_ATTRIBUTES = %i[client_id client_secret].freeze
-      TOKEN_ATTRIBUTES  = %i[access_token refresh_token expires_at expires_in].freeze
+      TOKEN_ATTRIBUTES  = %i[access_token id_token refresh_token expires_at expires_in].freeze
       ALL_ATTRIBUTES    = (CLIENT_ATTRIBUTES + TOKEN_ATTRIBUTES).freeze
 
       def retrieve(client = nil)
@@ -33,6 +33,7 @@ module Climbcomp
           client_id:      token.client.id,
           client_secret:  token.client.secret,
           access_token:   token.token,
+          id_token:       token['id_token'] || token[:id_token],
           refresh_token:  token.refresh_token,
           expires_at:     token.expires_at,
           expires_in:     token.expires_in

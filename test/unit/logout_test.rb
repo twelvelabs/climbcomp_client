@@ -20,6 +20,7 @@ class LogoutTest < Climbcomp::Spec
         client_id:      'client_id',
         client_secret:  'client_secret',
         access_token:   'access_token',
+        id_token:       'id_token',
         refresh_token:  'refresh_token',
         expires_at:     'expires_at',
         expires_in:     'expires_in'

@@ -12,9 +12,9 @@ class ConfigurationTest < Climbcomp::Spec
       assert_nil config.oidc_client_id
       assert_nil config.oidc_client_secret
       assert_nil config.oidc_access_token
+      assert_nil config.oidc_id_token
       assert_nil config.oidc_refresh_token
       assert_nil config.oidc_expires_at
-      assert_nil config.oidc_expires_in
       # auth urls should have valid defaults
       assert_equal 'https://staging.climbcomp.com/',        config.oidc_audience
       assert_equal 'https://climbcomp.auth0.com/',          config.oidc_issuer

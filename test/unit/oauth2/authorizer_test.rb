@@ -10,6 +10,7 @@ class OAuth2AuthorizerTest < Climbcomp::Spec
     let(:token_values) do
       {
         access_token:   'access-token',
+        id_token:       'id-token',
         refresh_token:  'refresh-token',
         expires_at:     '12345',
         expires_in:     '86400'
