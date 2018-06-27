@@ -9,10 +9,15 @@ class LoginTest < Climbcomp::Spec
 
     let(:input)   { StringIO.new }
     let(:output)  { StringIO.new }
-    let(:options) { {} }
     # All the command does is delegate to (and provide CLI output for) the authorizer,
     # which is covered by it's own unit tests. Just stubbing it out here for convenience.
     let(:command) { Climbcomp::Commands::Login.new(options, authorizer: stub('authorizer')) }
+    let(:options) do
+      {
+        client_store_path:  config_path('oauth2-client.yml'),
+        token_store_path:   config_path('oauth2-token.yml')
+      }
+    end
 
     it 'should exit early if already logged in' do
       command.authorizer.expects(:authorized?).returns(true)

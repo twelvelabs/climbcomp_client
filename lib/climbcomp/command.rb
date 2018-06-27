@@ -12,17 +12,20 @@ module Climbcomp
 
     def initialize(options = {})
       @options = options
+      @options[:client_store_path]  ||= File.join(Dir.home, '.climbcomp', 'oauth2-client.yml')
+      @options[:token_store_path]   ||= File.join(Dir.home, '.climbcomp', 'oauth2-token.yml')
     end
 
-    def credentials_store
-      raise 'Missing credentials path!' unless options[:credentials_path].present?
-      @credentials_store ||= Climbcomp::Store.new(options[:credentials_path])
+    def client_store
+      @client_store ||= Climbcomp::OAuth2::ClientStore.new(@options[:client_store_path])
     end
 
-    # Will be hash containing all the credentials required for the API client,
-    # or `nil` if any are missing or blank. Allows for an easy `credentials.present?` check.
-    def credentials
-      @credentials ||= credentials_store.presence(:client_id, :client_secret, :access_token, :refresh_token, :expires_at)
+    def token_store
+      @token_store ||= Climbcomp::OAuth2::TokenStore.new(@options[:token_store_path])
+    end
+
+    def token
+      @token = token_store.retrieve(client_store.retrieve || client_store.register)
     end
 
     # Execute this command

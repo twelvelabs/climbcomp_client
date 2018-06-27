@@ -9,40 +9,34 @@ class LogoutTest < Climbcomp::Spec
 
     let(:input)   { StringIO.new }
     let(:output)  { StringIO.new }
-    let(:options) { {} }
-    let(:command) { Climbcomp::Commands::Logout.new(options, token_store: token_store) }
-
-    let(:token_store)       { Climbcomp::OAuth2::TokenStore.new(token_store_path) }
-    let(:token_store_path)  { config_path('oauth2-token.yml') }
-
-    before do
-      token_store.insert(
-        client_id:      'client_id',
-        client_secret:  'client_secret',
-        access_token:   'access_token',
-        id_token:       'id_token',
-        refresh_token:  'refresh_token',
-        expires_at:     'expires_at',
-        expires_in:     'expires_in'
-      )
+    let(:command) { Climbcomp::Commands::Logout.new(options) }
+    let(:options) do
+      {
+        client_store_path:  config_path('oauth2-client.yml'),
+        token_store_path:   config_path('oauth2-token.yml')
+      }
     end
 
     it 'should logout if the user confirms' do
+      login_user
+
       input << 'Yes'
       input.rewind
 
       command.execute(input: input, output: output)
       assert_equal true, output.string.include?('Successfully logged out')
-      assert_nil token_store.retrieve
+      assert_nil command.token_store.retrieve
     end
 
     it 'should not logout if the user cancels' do
+      login_user
+
       input << 'No'
       input.rewind
 
       command.execute(input: input, output: output)
       assert_equal true, output.string.include?('Canceling')
-      refute_nil token_store.retrieve
+      refute_nil command.token_store.retrieve
     end
 
   end

@@ -8,7 +8,7 @@ module Climbcomp
 
       # Allowing the authorizer to be passed in for testing
       def initialize(options, authorizer: nil)
-        @options    = options
+        super(options)
         @authorizer = authorizer
       end
 
@@ -34,26 +34,6 @@ module Climbcomp
         else
           p.error 'Authentication failed!'
         end
-      end
-
-      def client_store_path
-        @client_store_path ||= File.join(Dir.home, '.climbcomp', 'oauth2-client.yml')
-      end
-
-      def client_store
-        @client_store ||= Climbcomp::OAuth2::ClientStore.new(client_store_path)
-      end
-
-      def client
-        @client = client_store.retrieve || client_store.register
-      end
-
-      def token_store_path
-        @token_store_path ||= File.join(Dir.home, '.climbcomp', 'oauth2-token.yml')
-      end
-
-      def token_store
-        @token_store ||= Climbcomp::OAuth2::TokenStore.new(token_store_path)
       end
 
       def authorizer

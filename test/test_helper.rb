@@ -30,6 +30,22 @@ module Climbcomp
       FileUtils.remove_dir(config_dir) if Dir.exist?(config_dir)
     end
 
+    def login_user # rubocop:disable Metrics/MethodLength
+      command.client_store.insert(
+        client_id:      'client_id',
+        client_secret:  'client_secret'
+      )
+      command.token_store.insert(
+        client_id:      'client_id',
+        client_secret:  'client_secret',
+        access_token:   'access_token',
+        id_token:       'id_token',
+        refresh_token:  'refresh_token',
+        expires_at:     'expires_at',
+        expires_in:     'expires_in'
+      )
+    end
+
     def config_dir
       File.join(Dir.tmpdir, 'climbcomp-test')
     end

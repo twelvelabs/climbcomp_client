@@ -11,11 +11,6 @@ module Climbcomp
     # Error raised by this runner
     Error = Class.new(StandardError)
 
-    DEFAULT_CREDENTIALS_PATH = File.join(Dir.home, '.climbcomp', 'credentials.yml')
-
-    class_option :credentials_path, type: :string, default: DEFAULT_CREDENTIALS_PATH,
-                                    desc: 'Path to credentials file (will be auto-created if missing).'
-
     desc 'version', 'climbcomp version'
     def version
       require_relative 'version'

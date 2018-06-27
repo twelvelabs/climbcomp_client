@@ -6,35 +6,28 @@ class CommandTest < Climbcomp::Spec
 
   describe Climbcomp::Command do
 
-    it 'should create a credentials store' do
-      command = Climbcomp::Command.new(credentials_path: config_path('credentials.yml'))
-      assert_instance_of Climbcomp::Store, command.credentials_store
-      assert_equal config_path('credentials.yml'), command.credentials_store.path
+    let(:command) { Climbcomp::Command.new(options) }
+    let(:options) do
+      {
+        client_store_path:  config_path('oauth2-client.yml'),
+        token_store_path:   config_path('oauth2-token.yml')
+      }
     end
 
-    it 'should return credentials if all present' do
-      command = Climbcomp::Command.new(credentials_path: config_path('credentials.yml'))
-      command.credentials_store.transaction do |s|
-        s[:client_id]     = 'value'
-        s[:client_secret] = 'value'
-        s[:access_token]  = 'value'
-        s[:refresh_token] = 'value'
-        s[:expires_at]    = 'value'
-      end
-      refute_nil command.credentials
-      assert_equal 5, command.credentials.size
+    it 'should use the correct client_store_path' do
+      assert_equal config_path('oauth2-client.yml'), command.client_store.path
     end
 
-    it 'should have nil credentials if any are missing' do
-      command = Climbcomp::Command.new(credentials_path: config_path('credentials.yml'))
-      command.credentials_store.transaction do |s|
-        s[:client_id]     = 'value'
-        s[:client_secret] = 'value'
-        s[:access_token]  = ''
-        s[:refresh_token] = ''
-        s[:expires_at]    = ''
-      end
-      assert_nil command.credentials
+    it 'should use the correct token_store_path' do
+      assert_equal config_path('oauth2-token.yml'), command.token_store.path
+    end
+
+    it 'should return a token if present' do
+      login_user
+      assert_equal 'client_id',     command.token.client.id
+      assert_equal 'client_secret', command.token.client.secret
+      assert_equal 'access_token',  command.token.token
+      assert_equal 'refresh_token', command.token.refresh_token
     end
 
   end

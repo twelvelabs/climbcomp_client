@@ -8,8 +8,8 @@ module Climbcomp
 
       # `token_store` arg used in unit tests
       def initialize(options, token_store: nil)
-        @options      = options
-        @token_store  = token_store
+        super(options)
+        @token_store = token_store
       end
 
       def execute(input: $stdin, output: $stdout)
@@ -21,16 +21,6 @@ module Climbcomp
         else
           p.ok 'Canceling.'
         end
-      end
-
-      private
-
-      def token_store_path
-        @token_store_path ||= File.join(Dir.home, '.climbcomp', 'oauth2-token.yml')
-      end
-
-      def token_store
-        @token_store ||= Climbcomp::OAuth2::TokenStore.new(token_store_path)
       end
 
     end
