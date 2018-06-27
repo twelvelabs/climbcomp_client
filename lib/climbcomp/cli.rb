@@ -23,7 +23,19 @@ module Climbcomp
     end
     map %w[--version -v] => :version
 
-    desc 'login', 'Command description...'
+    desc 'logout', 'Clear the auth token'
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    def logout(*)
+      if options[:help]
+        invoke :help, ['logout']
+      else
+        require_relative 'commands/logout'
+        Climbcomp::Commands::Logout.new(options).execute
+      end
+    end
+
+    desc 'login', 'Generate an auth token'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
     def login(*)

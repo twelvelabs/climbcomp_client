@@ -18,14 +18,7 @@ module Climbcomp
       end
 
       def store(token)
-        insert(
-          client_id:      token.client.id,
-          client_secret:  token.client.secret,
-          access_token:   token.token,
-          refresh_token:  token.refresh_token,
-          expires_at:     token.expires_at,
-          expires_in:     token.expires_in
-        )
+        token ? insert(token_attributes(token)) : clear
       end
 
       private
@@ -33,6 +26,17 @@ module Climbcomp
       def valid_client?(client)
         values = presence(*CLIENT_ATTRIBUTES)
         client.id == values[:client_id] && client.secret == values[:client_secret]
+      end
+
+      def token_attributes(token)
+        {
+          client_id:      token.client.id,
+          client_secret:  token.client.secret,
+          access_token:   token.token,
+          refresh_token:  token.refresh_token,
+          expires_at:     token.expires_at,
+          expires_in:     token.expires_in
+        }
       end
 
     end
