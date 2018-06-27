@@ -7,12 +7,12 @@ module Climbcomp
     class Login < Climbcomp::Command
 
       # Allowing the authorizer to be passed in for testing
-      def initialize(options, authorizer = nil)
+      def initialize(options, authorizer: nil)
         @options    = options
         @authorizer = authorizer
       end
 
-      def execute(input: $stdin, output: $stdout)
+      def execute(input: $stdin, output: $stdout) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         p = prompt(input: input, output: output)
         if authorizer.authorized?
           p.warn 'Already logged in!'

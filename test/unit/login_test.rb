@@ -12,7 +12,7 @@ class LoginTest < Climbcomp::Spec
     let(:options) { {} }
     # All the command does is delegate to (and provide CLI output for) the authorizer,
     # which is covered by it's own unit tests. Just stubbing it out here for convenience.
-    let(:command) { Climbcomp::Commands::Login.new(options, stub('authorizer')) }
+    let(:command) { Climbcomp::Commands::Login.new(options, authorizer: stub('authorizer')) }
 
     it 'should exit early if already logged in' do
       command.authorizer.expects(:authorized?).returns(true)
