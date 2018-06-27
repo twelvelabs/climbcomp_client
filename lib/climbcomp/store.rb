@@ -29,6 +29,12 @@ module Climbcomp
       end
     end
 
+    def clear
+      transaction do
+        roots.each { |k| delete(k) }
+      end
+    end
+
     # Similar to Hash#slice: returns a hash w/ all `keys` present in the store.
     def slice(*keys)
       transaction(true) do
@@ -40,12 +46,22 @@ module Climbcomp
     # If all keys are in the store, and all values are non-empty,
     # returns a slice containing those keys (otherwise returns nil).
     def presence(*keys)
-      hash = slice(*keys)
-      return nil unless hash.keys.sort == keys.sort
-      hash.values.each do |v|
-        return nil if v.blank?
+      return nil unless present?(*keys)
+      slice(*keys)
+    end
+
+    # True if all keys exist in the store and are non-empty.
+    def present?(*keys)
+      transaction(true) do
+        keys.all? { |k| root?(k) && self[k].present? }
       end
-      hash
+    end
+
+    # True if all keys exist in the store (regardless of their values).
+    def include?(*keys)
+      transaction(true) do
+        keys.all? { |k| root?(k) }
+      end
     end
 
   end

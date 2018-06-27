@@ -38,11 +38,7 @@ class StoreTest < Climbcomp::Spec
 
     it 'should return a slice' do
       store = Climbcomp::Store.new(storage_path)
-      store.transaction do |s|
-        s[:alpha]   = 'a'
-        s[:bravo]   = 'b'
-        s[:charlie] = 'c'
-      end
+      store.insert(alpha: 'a', bravo: 'b', charlie: 'c')
       assert_equal %i[alpha bravo], store.slice(:alpha, :bravo).keys.sort
       assert_equal %i[alpha],       store.slice(:alpha, :delta).keys.sort
       assert_equal [],              store.slice(:delta, :echo).keys.sort
@@ -50,11 +46,7 @@ class StoreTest < Climbcomp::Spec
 
     it 'should return a slice if all are present' do
       store = Climbcomp::Store.new(storage_path)
-      store.transaction do |s|
-        s[:alpha]   = 'a'
-        s[:bravo]   = 'b'
-        s[:charlie] = ''
-      end
+      store.insert(alpha: 'a', bravo: 'b', charlie: '')
       assert_equal %i[alpha bravo], store.presence(:alpha, :bravo).keys.sort
       # if _any_ key is either missing or blank, return `nil`
       assert_nil store.presence(:alpha, :bravo, :charlie)
@@ -64,22 +56,35 @@ class StoreTest < Climbcomp::Spec
 
     it 'should auto-convert string keys to symbols' do
       store = Climbcomp::Store.new(storage_path)
-      store.transaction do |s|
-        s['alpha']   = 'a'
-        s['bravo']   = 'b'
-        s['charlie'] = 'c'
-      end
-      assert_equal [:alpha], store.slice(:alpha).keys
+      store.insert('alpha' => 'a', 'bravo' => 'b', 'charlie' => 'c')
+      assert_equal('a', store.transaction { |s| s[:alpha] })
     end
 
     it 'should bulk insert hashes' do
       store = Climbcomp::Store.new(storage_path)
-      store.transaction do |s|
-        s[:alpha] = 'a'
-      end
+      store.insert(alpha: 'a')
+      assert_equal true, store.include?(:alpha)
       store.insert(alpha: 'A', bravo: 'B')
       assert_equal('A', store.transaction { |s| s[:alpha] })
       assert_equal('B', store.transaction { |s| s[:bravo] })
+    end
+
+    it 'should clear' do
+      store = Climbcomp::Store.new(storage_path)
+      store.insert(alpha: 'a', bravo: 'b')
+      assert_equal true, store.include?(:alpha, :bravo)
+      store.clear
+      assert_equal false, store.include?(:alpha)
+      assert_equal false, store.include?(:bravo)
+    end
+
+    it 'should tell whether key/value pairs are present' do
+      store = Climbcomp::Store.new(storage_path)
+      store.insert(alpha: 'a', bravo: 'b', charlie: '')
+      assert_equal true, store.present?(:alpha)
+      assert_equal true, store.present?(:alpha, :bravo)
+      assert_equal false, store.present?(:alpha, :bravo, :charlie)
+      assert_equal false, store.present?(:delta)
     end
 
   end
