@@ -31,7 +31,7 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
       write_yaml(token_store_path, token_values)
       token = token_store.retrieve
       assert_instance_of ::OAuth2::AccessToken, token
-      assert_nil token.client
+      assert_equal 'test_client_id', token.client.id
       assert_equal 'test_access_token', token.token
       assert_equal 'test_id_token', token[:id_token]
       assert_equal 'test_refresh_token', token.refresh_token
@@ -44,7 +44,7 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
       # When retrieving w/ an oauth client, we validate that the client's id/secret
       # match what's in the store
       token = token_store.retrieve(client)
-      assert_equal client, token.client
+      assert_equal 'test_client_id', token.client.id
       # We return a nil token if there's a client mismatch
       token = token_store.retrieve(stub(id: 'lol', secret: 'wat'))
       assert_nil token
@@ -52,12 +52,10 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
 
     it 'should store a token' do
       token = ::OAuth2::AccessToken.from_hash(client, token_values)
-
       token_store.store(token)
       stored = token_store.retrieve(client)
-
       assert_equal 'test_access_token', stored.token
-      assert_equal client, stored.client
+      assert_equal 'test_client_id', stored.client.id
     end
 
   end

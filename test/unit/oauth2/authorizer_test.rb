@@ -55,8 +55,8 @@ class OAuth2AuthorizerTest < Climbcomp::Spec
     it 'should handle the callback url' do
       client.auth_code.expects(:get_token).with('auth-code', redirect_uri: authorizer.callback_url).returns(token)
       authorizer.callback('auth-code')
-      assert_equal token.token, authorizer.token.token
-      assert_equal client, authorizer.token.client
+      assert_equal 'access-token', authorizer.token.token
+      assert_equal 'client-id', authorizer.token.client.id
     end
 
   end

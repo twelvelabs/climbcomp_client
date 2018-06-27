@@ -9,7 +9,13 @@ module Climbcomp
       def retrieve
         values = presence(:client_id, :client_secret)
         return nil unless values
-        ::OAuth2::Client.new(values[:client_id], values[:client_secret], client_options)
+        ::OAuth2::Client.new(
+          values[:client_id],
+          values[:client_secret],
+          site:           Climbcomp.config.oidc_issuer,
+          authorize_url:  Climbcomp.config.oidc_authorization_endpoint,
+          token_url:      Climbcomp.config.oidc_token_endpoint
+        )
       end
 
       def register
@@ -22,14 +28,6 @@ module Climbcomp
       end
 
       private
-
-      def client_options
-        {
-          site:           Climbcomp.config.oidc_issuer,
-          authorize_url:  Climbcomp.config.oidc_authorization_endpoint,
-          token_url:      Climbcomp.config.oidc_token_endpoint
-        }
-      end
 
       def send_registration_request
         client = {
