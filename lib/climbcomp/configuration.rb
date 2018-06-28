@@ -45,7 +45,7 @@ module Climbcomp
       end
     end
 
-    def to_token
+    def token
       # TODO: remove `oidc_` and implement `#[]` so we can just call `create(self)`
       Climbcomp::OAuth2::TokenFactory.create(
         client_id:     oidc_client_id,

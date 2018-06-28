@@ -76,7 +76,7 @@ class ConfigurationTest < Climbcomp::Spec
         oidc_refresh_token:  'test_refresh_token',
         oidc_expires_at:     '12345'
       )
-      token = config.to_token
+      token = config.token
       assert_equal 'test_client_id',      token.client.id
       assert_equal 'test_client_secret',  token.client.secret
       assert_equal 'test_access_token',   token.token
