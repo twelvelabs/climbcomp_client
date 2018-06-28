@@ -38,6 +38,9 @@ class ConfigurationTest < Climbcomp::Spec
       assert_equal 'https://auth.climbcomp.com/', config.oidc_issuer
     end
 
+    it 'should create from oauth token' do
+    end
+
   end
 
 end

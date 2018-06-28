@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/hash/slice'
 require 'active_support/core_ext/kernel/reporting'
 require 'active_support/core_ext/object/blank'
 require 'oauth2' # must be required before faraday
@@ -13,7 +14,9 @@ require 'climbcomp/version'
 require 'climbcomp/client'
 require 'climbcomp/configuration'
 require 'climbcomp/oauth2/authorizer'
+require 'climbcomp/oauth2/client_factory'
 require 'climbcomp/oauth2/client_store'
+require 'climbcomp/oauth2/token_factory'
 require 'climbcomp/oauth2/token_store'
 require 'climbcomp/store'
 

@@ -9,13 +9,7 @@ module Climbcomp
       def retrieve
         values = presence(:client_id, :client_secret)
         return nil unless values
-        ::OAuth2::Client.new(
-          values[:client_id],
-          values[:client_secret],
-          site:           Climbcomp.config.oidc_issuer,
-          authorize_url:  Climbcomp.config.oidc_authorization_endpoint,
-          token_url:      Climbcomp.config.oidc_token_endpoint
-        )
+        ClientFactory.create(values)
       end
 
       def register

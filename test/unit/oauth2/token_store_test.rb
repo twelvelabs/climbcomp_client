@@ -30,7 +30,6 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
     it 'should retrieve token if present' do
       write_yaml(token_store_path, token_values)
       token = token_store.retrieve
-      assert_instance_of ::OAuth2::AccessToken, token
       assert_equal 'test_client_id', token.client.id
       assert_equal 'test_access_token', token.token
       assert_equal 'test_id_token', token[:id_token]
@@ -51,7 +50,7 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
     end
 
     it 'should store a token' do
-      token = ::OAuth2::AccessToken.from_hash(client, token_values)
+      token = Climbcomp::OAuth2::TokenFactory.create(token_values)
       token_store.store(token)
       stored = token_store.retrieve(client)
       assert_equal 'test_access_token', stored.token

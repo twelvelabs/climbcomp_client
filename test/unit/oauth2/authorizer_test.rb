@@ -6,9 +6,10 @@ class OAuth2AuthorizerTest < Climbcomp::Spec
 
   describe Climbcomp::OAuth2::Authorizer do
 
-    let(:client) { ::OAuth2::Client.new('client-id', 'client-secret') }
     let(:token_values) do
       {
+        client_id:      'client-id',
+        client_secret:  'client-secret',
         access_token:   'access-token',
         id_token:       'id-token',
         refresh_token:  'refresh-token',
@@ -16,7 +17,8 @@ class OAuth2AuthorizerTest < Climbcomp::Spec
         expires_in:     '86400'
       }
     end
-    let(:token) { ::OAuth2::AccessToken.from_hash(client, token_values) }
+    let(:client)      { Climbcomp::OAuth2::ClientFactory.create(token_values.slice(:client_id, :client_secret)) }
+    let(:token)       { Climbcomp::OAuth2::TokenFactory.create(token_values) }
     let(:token_store) { Climbcomp::OAuth2::TokenStore.new(config_path('oauth2-token.yml')) }
     let(:authorizer) do
       Climbcomp::OAuth2::Authorizer.new(client: client, token_store: token_store)
