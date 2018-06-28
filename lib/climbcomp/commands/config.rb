@@ -15,9 +15,7 @@ module Climbcomp
 
         rows = []
         Climbcomp.config.each do |k, v|
-          if k.to_s.end_with?('_token', '_secret')
-            v = '[REDACTED]'
-          end
+          v = '[REDACTED]' if v.present? && k.to_s.end_with?('_token', '_secret')
           rows << [k, v.to_s]
         end
 
