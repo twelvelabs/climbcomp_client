@@ -20,13 +20,21 @@ class ClimbcompTest < Climbcomp::Spec
       assert_equal '/foo', Climbcomp.config.oidc_authorization_endpoint
     end
 
+    it 'should have a global client' do
+      client = Climbcomp.client
+      assert_instance_of Climbcomp::Client, client
+      assert_equal Climbcomp.config, client.config
+    end
+
     it 'should reset to default state' do
       Climbcomp.configure do |c|
         c.oidc_authorization_endpoint = '/foo'
       end
       assert_equal '/foo', Climbcomp.config.oidc_authorization_endpoint
+      assert_equal '/foo', Climbcomp.client.config.oidc_authorization_endpoint
       Climbcomp.reset!
       assert_equal '/authorize', Climbcomp.config.oidc_authorization_endpoint
+      assert_equal '/authorize', Climbcomp.client.config.oidc_authorization_endpoint
     end
 
   end

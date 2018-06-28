@@ -10,6 +10,7 @@ require 'yaml'
 require 'yaml/store'
 
 require 'climbcomp/version'
+require 'climbcomp/client'
 require 'climbcomp/configuration'
 require 'climbcomp/oauth2/authorizer'
 require 'climbcomp/oauth2/client_store'
@@ -19,7 +20,12 @@ require 'climbcomp/store'
 module Climbcomp
 
   class << self
-    attr_writer :config
+    attr_writer :client, :config
+
+    # Global client
+    def client
+      @client ||= Client.new
+    end
 
     # Global configuration
     def config
@@ -40,6 +46,7 @@ module Climbcomp
 
     # Reset global state. Useful in tests.
     def reset!
+      @client = nil
       @config = nil
     end
   end
