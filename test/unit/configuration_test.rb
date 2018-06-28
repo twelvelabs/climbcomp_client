@@ -39,6 +39,40 @@ class ConfigurationTest < Climbcomp::Spec
     end
 
     it 'should create from oauth token' do
+      attributes = {
+        client_id:      'test_client_id',
+        client_secret:  'test_client_secret',
+        access_token:   'test_access_token',
+        id_token:       'test_id_token',
+        refresh_token:  'test_refresh_token',
+        expires_at:     '12345'
+      }
+      token = Climbcomp::OAuth2::TokenFactory.create(attributes)
+      config = Climbcomp::Configuration.from_token(token)
+      assert_equal 'test_client_id',      config.oidc_client_id
+      assert_equal 'test_client_secret',  config.oidc_client_secret
+      assert_equal 'test_access_token',   config.oidc_access_token
+      assert_equal 'test_id_token',       config.oidc_id_token
+      assert_equal 'test_refresh_token',  config.oidc_refresh_token
+      assert_equal 12345,                 config.oidc_expires_at
+    end
+
+    it 'should generate an oauth token' do
+      config = Climbcomp::Configuration.new(
+        oidc_client_id:      'test_client_id',
+        oidc_client_secret:  'test_client_secret',
+        oidc_access_token:   'test_access_token',
+        oidc_id_token:       'test_id_token',
+        oidc_refresh_token:  'test_refresh_token',
+        oidc_expires_at:     '12345'
+      )
+      token = config.to_token
+      assert_equal 'test_client_id',      token.client.id
+      assert_equal 'test_client_secret',  token.client.secret
+      assert_equal 'test_access_token',   token.token
+      assert_equal 'test_id_token',       token[:id_token]
+      assert_equal 'test_refresh_token',  token.refresh_token
+      assert_equal 12345,                 token.expires_at
     end
 
   end
