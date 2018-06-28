@@ -11,7 +11,7 @@ module Climbcomp
       oidc_id_token:                nil,
       oidc_refresh_token:           nil,
       oidc_expires_at:              nil,
-      oidc_audience:                'https://staging.climbcomp.com/',
+      oidc_audience:                'https://climbcomp.com/',
       oidc_issuer:                  'https://climbcomp.auth0.com/',
       oidc_scopes:                  'openid profile email offline_access',
       oidc_authorization_endpoint:  '/authorize',
@@ -29,23 +29,19 @@ module Climbcomp
 
     attr_accessor(*DEFAULT_OPTIONS.keys)
 
-    class << self
-      def from_token(token)
-        config = new
-        attributes = Climbcomp::OAuth2::TokenFactory.attributes_for(token)
-        # TODO: remove `oidc_` prefixes, so we can just call `new(attributes)`
-        attributes.each do |k, v|
-          writer = "oidc_#{k}=".to_sym
-          config.send(writer, v) if config.respond_to?(writer)
-        end
-        config
-      end
-    end
-
     def initialize(options = {})
       options = DEFAULT_OPTIONS.merge(options.with_indifferent_access)
       options.each do |k, v|
         instance_variable_set("@#{k}", v)
+      end
+    end
+
+    def token=(token)
+      return unless token
+      attributes = Climbcomp::OAuth2::TokenFactory.attributes_for(token)
+      # TODO: remove `oidc_` prefixes
+      attributes.each do |k, v|
+        send("oidc_#{k}=", v) if respond_to?("oidc_#{k}=")
       end
     end
 

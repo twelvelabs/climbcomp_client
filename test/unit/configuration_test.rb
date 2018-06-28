@@ -16,7 +16,7 @@ class ConfigurationTest < Climbcomp::Spec
       assert_nil config.oidc_refresh_token
       assert_nil config.oidc_expires_at
       # auth urls should have valid defaults
-      assert_equal 'https://staging.climbcomp.com/',        config.oidc_audience
+      assert_equal 'https://climbcomp.com/',                config.oidc_audience
       assert_equal 'https://climbcomp.auth0.com/',          config.oidc_issuer
       assert_equal 'openid profile email offline_access',   config.oidc_scopes
       assert_equal '/authorize',                            config.oidc_authorization_endpoint
@@ -38,7 +38,7 @@ class ConfigurationTest < Climbcomp::Spec
       assert_equal 'https://auth.climbcomp.com/', config.oidc_issuer
     end
 
-    it 'should create from oauth token' do
+    it 'should set token options from oauth token' do
       attributes = {
         client_id:      'test_client_id',
         client_secret:  'test_client_secret',
@@ -47,14 +47,24 @@ class ConfigurationTest < Climbcomp::Spec
         refresh_token:  'test_refresh_token',
         expires_at:     '12345'
       }
-      token = Climbcomp::OAuth2::TokenFactory.create(attributes)
-      config = Climbcomp::Configuration.from_token(token)
+      config = Climbcomp::Configuration.new
+      config.token = Climbcomp::OAuth2::TokenFactory.create(attributes)
       assert_equal 'test_client_id',      config.oidc_client_id
       assert_equal 'test_client_secret',  config.oidc_client_secret
       assert_equal 'test_access_token',   config.oidc_access_token
       assert_equal 'test_id_token',       config.oidc_id_token
       assert_equal 'test_refresh_token',  config.oidc_refresh_token
-      assert_equal 12345,                 config.oidc_expires_at
+      assert_equal 12_345,                config.oidc_expires_at
+    end
+
+    it 'should handle setting token to nil' do
+      config = Climbcomp::Configuration.new(
+        oidc_client_id:     'client-id',
+        oidc_client_secret: 'client-secret'
+      )
+      config.token = nil
+      assert_equal 'client-id',     config.oidc_client_id
+      assert_equal 'client-secret', config.oidc_client_secret
     end
 
     it 'should generate an oauth token' do
@@ -72,7 +82,7 @@ class ConfigurationTest < Climbcomp::Spec
       assert_equal 'test_access_token',   token.token
       assert_equal 'test_id_token',       token[:id_token]
       assert_equal 'test_refresh_token',  token.refresh_token
-      assert_equal 12345,                 token.expires_at
+      assert_equal 12_345,                token.expires_at
     end
 
   end
