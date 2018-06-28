@@ -7,7 +7,7 @@ module Climbcomp
     class Login < Climbcomp::Command
 
       # Allowing the authorizer to be passed in for testing
-      def initialize(options, authorizer: nil)
+      def initialize(options = {}, authorizer: nil)
         super(options)
         @authorizer = authorizer
       end

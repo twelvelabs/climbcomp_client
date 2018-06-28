@@ -6,15 +6,14 @@ class OAuth2ClientStoreTest < Climbcomp::Spec
 
   describe Climbcomp::OAuth2::ClientStore do
 
-    let(:client_store_path) { config_path('oauth2-client.yml') }
-    let(:client_store)      { Climbcomp::OAuth2::ClientStore.new(client_store_path) }
+    let(:client_store) { Climbcomp::OAuth2::ClientStore.new(Climbcomp.config.client_store_path) }
 
     it 'should retrieve nil client by default' do
       assert_nil client_store.retrieve
     end
 
     it 'should retrieve from stored values if present' do
-      write_yaml(client_store_path, client_id: '1234', client_secret: 'abcd')
+      write_yaml(Climbcomp.config.client_store_path, client_id: '1234', client_secret: 'abcd')
       client = client_store.retrieve
       assert_equal '1234', client.id
       assert_equal 'abcd', client.secret

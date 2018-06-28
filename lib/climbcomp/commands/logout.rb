@@ -7,7 +7,7 @@ module Climbcomp
     class Logout < Climbcomp::Command
 
       # `token_store` arg used in unit tests
-      def initialize(options, token_store: nil)
+      def initialize(options = {}, token_store: nil)
         super(options)
         @token_store = token_store
       end

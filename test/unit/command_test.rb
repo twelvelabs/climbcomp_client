@@ -6,19 +6,13 @@ class CommandTest < Climbcomp::Spec
 
   describe Climbcomp::Command do
 
-    let(:command) { Climbcomp::Command.new(options) }
-    let(:options) do
-      {
-        client_store_path:  config_path('oauth2-client.yml'),
-        token_store_path:   config_path('oauth2-token.yml')
-      }
-    end
+    let(:command) { Climbcomp::Command.new }
 
-    it 'should use the correct client_store_path' do
+    it 'should use the correct client_store path' do
       assert_equal config_path('oauth2-client.yml'), command.client_store.path
     end
 
-    it 'should use the correct token_store_path' do
+    it 'should use the correct token_store path' do
       assert_equal config_path('oauth2-token.yml'), command.token_store.path
     end
 

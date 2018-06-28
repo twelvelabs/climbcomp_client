@@ -20,6 +20,10 @@ module Climbcomp
       oidc_userinfo_endpoint:       '/userinfo',
       oidc_registration_endpoint:   '/oidc/register',
       oidc_redirect_uri:            'http://localhost:3001/oauth/callback',
+
+      client_store_path:            File.join(Dir.home, '.climbcomp', 'oauth2-client.yml'),
+      token_store_path:             File.join(Dir.home, '.climbcomp', 'oauth2-token.yml'),
+
       user_agent:                   "Climbcomp Ruby Gem #{Climbcomp::VERSION}"
     }.freeze
 

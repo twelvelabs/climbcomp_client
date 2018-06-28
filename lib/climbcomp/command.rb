@@ -12,16 +12,14 @@ module Climbcomp
 
     def initialize(options = {})
       @options = options
-      @options[:client_store_path]  ||= File.join(Dir.home, '.climbcomp', 'oauth2-client.yml')
-      @options[:token_store_path]   ||= File.join(Dir.home, '.climbcomp', 'oauth2-token.yml')
     end
 
     def client_store
-      @client_store ||= Climbcomp::OAuth2::ClientStore.new(@options[:client_store_path])
+      @client_store ||= Climbcomp::OAuth2::ClientStore.new(Climbcomp.config.client_store_path)
     end
 
     def token_store
-      @token_store ||= Climbcomp::OAuth2::TokenStore.new(@options[:token_store_path])
+      @token_store ||= Climbcomp::OAuth2::TokenStore.new(Climbcomp.config.token_store_path)
     end
 
     def token

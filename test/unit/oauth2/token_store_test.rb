@@ -6,10 +6,8 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
 
   describe Climbcomp::OAuth2::TokenStore do
 
-    let(:client)            { stub(id: 'test_client_id', secret: 'test_client_secret') }
-    let(:token_store_path)  { config_path('oauth2-token.yml') }
-    let(:token_store)       { Climbcomp::OAuth2::TokenStore.new(token_store_path) }
-
+    let(:client)      { stub(id: 'test_client_id', secret: 'test_client_secret') }
+    let(:token_store) { Climbcomp::OAuth2::TokenStore.new(Climbcomp.config.token_store_path) }
     let(:token_values) do
       {
         client_id:      'test_client_id',
@@ -28,7 +26,7 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
     end
 
     it 'should retrieve token if present' do
-      write_yaml(token_store_path, token_values)
+      write_yaml(Climbcomp.config.token_store_path, token_values)
       token = token_store.retrieve
       assert_equal 'test_client_id', token.client.id
       assert_equal 'test_access_token', token.token
@@ -39,7 +37,7 @@ class OAuth2TokenStoreTest < Climbcomp::Spec
     end
 
     it 'should validate client when retrieving' do
-      write_yaml(token_store_path, token_values)
+      write_yaml(Climbcomp.config.token_store_path, token_values)
       # When retrieving w/ an oauth client, we validate that the client's id/secret
       # match what's in the store
       token = token_store.retrieve(client)

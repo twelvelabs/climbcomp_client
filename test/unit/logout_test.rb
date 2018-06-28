@@ -9,13 +9,7 @@ class LogoutTest < Climbcomp::Spec
 
     let(:input)   { StringIO.new }
     let(:output)  { StringIO.new }
-    let(:command) { Climbcomp::Commands::Logout.new(options) }
-    let(:options) do
-      {
-        client_store_path:  config_path('oauth2-client.yml'),
-        token_store_path:   config_path('oauth2-token.yml')
-      }
-    end
+    let(:command) { Climbcomp::Commands::Logout.new }
 
     it 'should logout if the user confirms' do
       login_user

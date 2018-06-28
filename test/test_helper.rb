@@ -24,9 +24,14 @@ module Climbcomp
     # Ensure config dir is always cleared out between test runs.
     before do
       FileUtils.remove_dir(config_dir) if Dir.exist?(config_dir)
+      Climbcomp.configure do |c|
+        c.client_store_path = config_path('oauth2-client.yml')
+        c.token_store_path  = config_path('oauth2-token.yml')
+      end
     end
 
     after do
+      Climbcomp.reset!
       FileUtils.remove_dir(config_dir) if Dir.exist?(config_dir)
     end
 
