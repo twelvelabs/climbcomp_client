@@ -23,6 +23,10 @@ module Climbcomp
         end
       end
 
+      def token_store
+        @token_store ||= Climbcomp::OAuth2::TokenStore.new(Climbcomp.config.token_store_path)
+      end
+
     end
   end
 end

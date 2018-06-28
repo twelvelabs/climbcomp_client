@@ -21,6 +21,10 @@ module Climbcomp
         retrieve
       end
 
+      def retrieve_or_register
+        retrieve || register
+      end
+
       private
 
       def send_registration_request

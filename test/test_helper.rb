@@ -35,22 +35,6 @@ module Climbcomp
       FileUtils.remove_dir(config_dir) if Dir.exist?(config_dir)
     end
 
-    def login_user # rubocop:disable Metrics/MethodLength
-      command.client_store.insert(
-        client_id:      'client_id',
-        client_secret:  'client_secret'
-      )
-      command.token_store.insert(
-        client_id:      'client_id',
-        client_secret:  'client_secret',
-        access_token:   'access_token',
-        id_token:       'id_token',
-        refresh_token:  'refresh_token',
-        expires_at:     'expires_at',
-        expires_in:     'expires_in'
-      )
-    end
-
     def config_dir
       File.join(Dir.tmpdir, 'climbcomp-test')
     end
@@ -64,6 +48,19 @@ module Climbcomp
       dir = File.dirname(path)
       Dir.mkdir(dir) unless Dir.exist?(dir)
       File.write(path, content.to_yaml)
+    end
+
+    def write_token_yaml
+      write_yaml(
+        config_path('oauth2-token.yml'),
+        client_id:      'client_id',
+        client_secret:  'client_secret',
+        access_token:   'access_token',
+        id_token:       'id_token',
+        refresh_token:  'refresh_token',
+        expires_at:     'expires_at',
+        expires_in:     'expires_in'
+      )
     end
 
   end

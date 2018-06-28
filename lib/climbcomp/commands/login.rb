@@ -36,8 +36,19 @@ module Climbcomp
         end
       end
 
+      def client_store
+        @client_store ||= Climbcomp::OAuth2::ClientStore.new(Climbcomp.config.client_store_path)
+      end
+
+      def token_store
+        @token_store ||= Climbcomp::OAuth2::TokenStore.new(Climbcomp.config.token_store_path)
+      end
+
       def authorizer
-        @authorizer ||= Climbcomp::OAuth2::Authorizer.new(client: client, token_store: token_store)
+        @authorizer ||= Climbcomp::OAuth2::Authorizer.new(
+          client:       client_store.retrieve_or_register,
+          token_store:  token_store
+        )
       end
 
     end

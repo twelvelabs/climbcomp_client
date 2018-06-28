@@ -12,7 +12,7 @@ class LogoutTest < Climbcomp::Spec
     let(:command) { Climbcomp::Commands::Logout.new }
 
     it 'should logout if the user confirms' do
-      login_user
+      write_token_yaml
 
       input << 'Yes'
       input.rewind
@@ -23,7 +23,7 @@ class LogoutTest < Climbcomp::Spec
     end
 
     it 'should not logout if the user cancels' do
-      login_user
+      write_token_yaml
 
       input << 'No'
       input.rewind

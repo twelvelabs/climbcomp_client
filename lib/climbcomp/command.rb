@@ -14,18 +14,6 @@ module Climbcomp
       @options = options
     end
 
-    def client_store
-      @client_store ||= Climbcomp::OAuth2::ClientStore.new(Climbcomp.config.client_store_path)
-    end
-
-    def token_store
-      @token_store ||= Climbcomp::OAuth2::TokenStore.new(Climbcomp.config.token_store_path)
-    end
-
-    def token
-      @token = token_store.retrieve(client_store.retrieve || client_store.register)
-    end
-
     # Execute this command
     #
     # @api public
