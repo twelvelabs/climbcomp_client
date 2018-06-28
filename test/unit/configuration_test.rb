@@ -85,6 +85,18 @@ class ConfigurationTest < Climbcomp::Spec
       assert_equal 12_345,                token.expires_at
     end
 
+    it 'should allow iterating over options' do
+      keys    = []
+      values  = []
+      config  = Climbcomp::Configuration.new
+      config.each do |k, v|
+        keys << k
+        values << v
+      end
+      assert_equal keys,    Climbcomp::Configuration::DEFAULT_OPTIONS.keys
+      assert_equal values,  Climbcomp::Configuration::DEFAULT_OPTIONS.values
+    end
+
   end
 
 end

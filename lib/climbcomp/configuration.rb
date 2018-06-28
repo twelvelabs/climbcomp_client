@@ -36,6 +36,16 @@ module Climbcomp
       end
     end
 
+    def keys
+      DEFAULT_OPTIONS.keys
+    end
+
+    def each
+      keys.each do |k|
+        yield(k, send(k))
+      end
+    end
+
     def token=(token)
       return unless token
       attributes = Climbcomp::OAuth2::TokenFactory.attributes_for(token)

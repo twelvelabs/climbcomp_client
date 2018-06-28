@@ -18,6 +18,18 @@ module Climbcomp
     end
     map %w[--version -v] => :version
 
+    desc 'config', 'Show current config'
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    def config(*)
+      if options[:help]
+        invoke :help, ['config']
+      else
+        require_relative 'commands/config'
+        Climbcomp::Commands::Config.new(options).execute
+      end
+    end
+
     desc 'logout', 'Clear the auth token'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
