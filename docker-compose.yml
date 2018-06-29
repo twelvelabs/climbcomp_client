@@ -1,13 +1,17 @@
 version: '3'
 volumes:
   app-bundle:
+  app-home:
 services:
   app:
     build: .
     env_file:
       - '.env'
     volumes:
-      - .:/app:cached
+      - .:/climbcomp:cached
       - app-bundle:/usr/local/bundle
+      - app-home:/root
+    ports:
+      - 3001:3001
     stdin_open: true
     tty: true

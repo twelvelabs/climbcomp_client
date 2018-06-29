@@ -3,7 +3,11 @@
 
 lib_path = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+
+require 'climbcomp'
 require 'climbcomp/cli'
+# Note: This sets the global config for the CLI (should only ever be required here)
+require 'climbcomp/cli/initializer'
 
 Signal.trap('INT') do
   warn("\n#{caller.join("\n")}: interrupted")

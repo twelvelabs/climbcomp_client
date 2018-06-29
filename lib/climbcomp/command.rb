@@ -8,6 +8,12 @@ module Climbcomp
 
     def_delegators :command, :run
 
+    attr_accessor :options
+
+    def initialize(options = {})
+      @options = options
+    end
+
     # Execute this command
     #
     # @api public

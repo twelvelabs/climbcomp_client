@@ -32,6 +32,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'activesupport', '>= 4.0.0'
+  spec.add_dependency 'faraday', '~> 0.12'
+  spec.add_dependency 'launchy', '~> 2.4.3'
+  spec.add_dependency 'oauth2', '~> 1.4'
   spec.add_dependency 'pastel', '~> 0.7.2'
   spec.add_dependency 'thor', '~> 0.20.0'
   spec.add_dependency 'tty-color', '~> 0.4.2'
@@ -54,6 +58,9 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'minitest', '~> 5.0'
+  spec.add_development_dependency 'minitest-reporters', '~> 1.3'
+  spec.add_development_dependency 'mocha', '~> 1.5'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rubocop', '~> 0.57'
+  spec.add_development_dependency 'webmock', '~> 3.4'
 end
