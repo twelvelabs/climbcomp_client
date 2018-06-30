@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require_relative '../command'
-require 'tty-table'
+silence_warnings do
+  require 'tty-table'
+end
 
 module Climbcomp
   module Commands
