@@ -62,8 +62,8 @@ module Climbcomp
 
       def callback(code)
         return unless code.present?
-        token = client.auth_code.get_token(code, redirect_uri: callback_url)
-        token_store.store(token)
+        Climbcomp.config.token = client.auth_code.get_token(code, redirect_uri: callback_url)
+        token_store.store(Climbcomp.config.token)
       end
 
       def callback_server

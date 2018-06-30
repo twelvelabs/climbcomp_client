@@ -16,7 +16,8 @@ module Climbcomp
         p = prompt(input: input, output: output)
 
         if p.yes?('Are you sure?')
-          token_store.store(nil)
+          Climbcomp.config.token = nil
+          token_store.store(Climbcomp.config.token)
           p.ok 'Successfully logged out.'
         else
           p.ok 'Canceling.'
