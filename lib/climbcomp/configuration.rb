@@ -32,7 +32,7 @@ module Climbcomp
     def initialize(options = {})
       options = DEFAULT_OPTIONS.merge(options.with_indifferent_access)
       options.each do |k, v|
-        instance_variable_set("@#{k}", v)
+        send("#{k}=", v) if respond_to?("#{k}=")
       end
     end
 
@@ -47,17 +47,22 @@ module Climbcomp
     end
 
     def token=(token)
-      return unless token
-      attributes = Climbcomp::OAuth2::TokenFactory.attributes_for(token)
-      # TODO: remove `oidc_` prefixes
-      attributes.each do |k, v|
-        send("oidc_#{k}=", v) if respond_to?("oidc_#{k}=")
+      @token = token
+      if @token
+        attributes = Climbcomp::OAuth2::TokenFactory.attributes_for(token)
+        attributes.each do |k, v|
+          # TODO: remove `oidc_` prefixes
+          send("oidc_#{k}=", v) if respond_to?("oidc_#{k}=")
+        end
+      else
+        clear_token_attributes
       end
     end
 
     def token
+      return nil unless oidc_access_token.present? && oidc_refresh_token.present?
       # TODO: remove `oidc_` and implement `#[]` so we can just call `create(self)`
-      Climbcomp::OAuth2::TokenFactory.create(
+      @token ||= Climbcomp::OAuth2::TokenFactory.create(
         client_id:     oidc_client_id,
         client_secret: oidc_client_secret,
         access_token:  oidc_access_token,
@@ -65,6 +70,15 @@ module Climbcomp
         refresh_token: oidc_refresh_token,
         expires_at:    oidc_expires_at
       )
+    end
+
+    private
+
+    def clear_token_attributes
+      self.oidc_access_token   = nil
+      self.oidc_id_token       = nil
+      self.oidc_refresh_token  = nil
+      self.oidc_expires_at     = nil
     end
 
   end

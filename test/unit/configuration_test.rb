@@ -60,11 +60,19 @@ class ConfigurationTest < Climbcomp::Spec
     it 'should handle setting token to nil' do
       config = Climbcomp::Configuration.new(
         oidc_client_id:     'client-id',
-        oidc_client_secret: 'client-secret'
+        oidc_client_secret: 'client-secret',
+        oidc_access_token:  'access-token',
+        oidc_id_token:      'id-token',
+        oidc_refresh_token: 'refresh-token',
+        oidc_expires_at:    '12345'
       )
       config.token = nil
       assert_equal 'client-id',     config.oidc_client_id
       assert_equal 'client-secret', config.oidc_client_secret
+      assert_nil config.oidc_access_token
+      assert_nil config.oidc_id_token
+      assert_nil config.oidc_refresh_token
+      assert_nil config.oidc_expires_at
     end
 
     it 'should generate an oauth token' do
@@ -83,6 +91,18 @@ class ConfigurationTest < Climbcomp::Spec
       assert_equal 'test_id_token',       token[:id_token]
       assert_equal 'test_refresh_token',  token.refresh_token
       assert_equal 12_345,                token.expires_at
+    end
+
+    it 'should return nil token if missing attributes' do
+      config = Climbcomp::Configuration.new(
+        oidc_client_id:      'test_client_id',
+        oidc_client_secret:  'test_client_secret',
+        oidc_access_token:   '',
+        oidc_id_token:       '',
+        oidc_refresh_token:  '',
+        oidc_expires_at:     ''
+      )
+      assert_nil config.token
     end
 
     it 'should allow iterating over options' do
