@@ -32,7 +32,7 @@ module Climbcomp
     def initialize(options = {})
       options = DEFAULT_OPTIONS.merge(options.with_indifferent_access)
       options.each do |k, v|
-        instance_variable_set("@#{k}", v)
+        send("#{k}=", v) if respond_to?("#{k}=")
       end
     end
 

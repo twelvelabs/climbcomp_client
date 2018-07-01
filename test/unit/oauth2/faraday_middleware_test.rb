@@ -52,7 +52,7 @@ class OAuth2FaradayMiddlewareTest < Climbcomp::Spec
       refreshed = Climbcomp::OAuth2::TokenFactory.create(refreshed_values)
       Climbcomp.config.token = Climbcomp::OAuth2::TokenFactory.create(token_values)
       Climbcomp.config.token.expects(:expired?).returns(true)
-      Climbcomp.config.token.expects(:refresh).returns(refreshed)
+      Climbcomp.config.token.expects(:refresh!).returns(refreshed)
       e = middleware.call(env)
       assert_equal 'Bearer NEW_access_token', e[:request_headers]['Authorization']
       assert_equal 'NEW_access_token', Climbcomp.config.token.token
